@@ -318,6 +318,9 @@
 	</build>
 	
 	<modules>
-		<module></module>
+		<module>testwebdemo-base</module>
+		<module>testwebdemo-domain</module>
+		<module>testwebdemo-front</module>
+		<module>testwebdemo-web</module>
 	</modules>
 </project>
