@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>业务运营管理系统</title>
+	#parse("bgm/include.vm")
+	<link rel="stylesheet" type="text/css" href="$template_url/admin/css/css.css" />
+</head>
+
+<body>
+	<div class="divMain">
+	    <form  action="$!front_url/systemFunction/facade.html" method="post" id="queryForm">
+			<div class="divMain_chaxun">
+		    	<div class="divMain_chaxun_bt line_botoom">系统功能管理</div>
+		        <div class="divMain_chaxun_m">
+					<div class="divMain_chaxun_mOne">功能名称：<input name="name" type="text" value="$!object.name" maxlength="20" class="text100"></div>
+		        	<div class="divMain_chaxun_mAnniu"><input type="submit" value="查 询" class="anniu_blue"></div>
+		        </div>
+		    </div>
+	    </form>
+
+
+			<div class="divMain_chaxun">
+				<div class="divMain_liebiao_bt line_botoom">
+				<span class="divMain_liebiao_one01" style="width:1%;">&nbsp;</span>
+				<span class="divMain_liebiao_one01" style="width:11%;">所处层级</span>
+				<span class="divMain_liebiao_one01" style="width:11%;">同级序号</span>
+				<span class="divMain_liebiao_one01" style="width:22%;">功能名称</span>
+				<span class="divMain_liebiao_one01" style="width:11%;">是否菜单</span>
+				<span class="divMain_liebiao_one01" style="width:22%;">访问路径</span>
+				<span class="divMain_liebiao_one01" style="width:17%;">操作</span>
+			</div>
+
+			#if($pager.elements.size()>0)
+				#foreach($item in $pager.elements)
+				<div class="divMain_liebiao_all line_botoom">
+					<span class="divMain_liebiao_one01" style="width:1%;">&nbsp;</span>
+					<span class="divMain_liebiao_all01" style="width:11%;">$!item.level</span>
+					<span class="divMain_liebiao_all01" style="width:11%;">$!item.serial</span>
+					<span class="divMain_liebiao_all01" style="width:22%;">$!item.name</span>
+					<span class="divMain_liebiao_all01" style="width:11%;">#if($!item.menu == true) 是 #else 否 #end</span>
+					<span class="divMain_liebiao_all01" style="width:22%;">$!item.actionUrl</span>
+					<span class="divMain_liebiao_all01" style="width:10%;">
+						<a href="$!front_url/systemFunction/detail?id=$item.id">详情</a>
+						&nbsp;|&nbsp;
+						<a href="$!front_url/systemFunction/modify?id=$item.id">修改</a>
+					</span>
+				</div>
+				#end
+			#else
+				<div class="divNone line_botoom">暂无信息</div>
+			#end
+
+
+	        <div class="divMain_fenye">
+	        	<div class="divMain_fenyeL"><a href="$!front_url/systemFunction/add.html" class="anniu_blue">添加</a></div>
+				#parse("bgm/commonPager.vm")
+	        </div>
+	    </div>
+	</div>
+</body>
+</html>

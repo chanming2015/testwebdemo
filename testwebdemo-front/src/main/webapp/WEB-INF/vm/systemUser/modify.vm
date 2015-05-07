@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>业务运营管理系统</title>
+	#parse("bgm/include.vm")
+	<link rel="stylesheet" type="text/css" href="$template_url/admin/css/css.css" />
+	<script type="text/javascript" src="$template_url/admin/js/additional-methods.js"></script>
+	<script>
+		$(function(){
+	    	$("#updateForm").validate({
+	    		submitHandler:function(form){
+	    			modify();
+	            },
+	            onfocusout: function(element) { $(element).valid(); },
+	    		rules:{
+	    			loginName:{required:true, minlength:2, maxlength:20},
+	    			realName:{required:true, minlength:2, maxlength:20},
+	    			mobile:{required:true, maxlength:13},
+	    			roleIds:{required:true},
+	    			password:{charsAndNumbers:true},
+	    			password1:{equalTo:"#password"}
+	    		}
+	    	});
+		});
+		function modify(){
+			$.ajax({
+                type: "POST",
+                url: "$!front_url/systemUser/modify.json",
+                data: $('#updateForm').serialize(),
+                success: function(data) {
+                	if(data.success == "S"){
+                		window.location = "$!front_url/systemUser/facade.html"
+                	}else{
+                		alert(data.msg);
+                	}
+                },
+                error: function(data) {
+                    alert("访问出错，请检查网络。" + JSON.stringify(data));
+               	}
+            });
+		}
+		function showPasswordInput(){
+			$('#pwdDiv').show();
+			$('#pwd1Div').show();
+		}
+	</script>
+</head>
+
+<body>
+
+<div class="divMain">
+    <form action="$!front_url/systemUser/modify.json" method="post" id="updateForm">
+    <input name="id" id="id" type="hidden"  value="$!object.id"/>
+	<div class="divMain_chaxun">
+    	<div class="divMain_add_bt line_botoom">修改系统用户</div>
+        <div class="divMain_add_all line_botoom">
+        	<div class="divMain_add_allOne line_botoom">
+            	<div class="divMain_add_allOne_L"><span class="color_xinghao">*</span>&nbsp;登录名：</div>
+            	<div class="divMain_add_allOne_R">
+            		<input name="loginName" id="loginName" type="text" value="$!object.loginName" readonly class="text270"/>
+            	</div>
+            </div>
+            
+            <div class="divMain_add_allOne line_botoom">
+            	<div class="divMain_add_allOne_L"><span class="color_xinghao">*</span>&nbsp;真实姓名：</div>
+            	<div class="divMain_add_allOne_R">
+            		<input name="realName" id="realName" type="text" value="$!object.realName"  class="text270"/>
+            	</div>
+            </div>
+            
+            <div class="divMain_add_allOne line_botoom">
+            	<div class="divMain_add_allOne_L"><span class="color_xinghao">*</span>&nbsp;手机号码：</div>
+            	<div class="divMain_add_allOne_R">
+            		<input name="mobile" id="mobile" type="text" value="$!object.mobile"  class="text270"/>
+            	</div>
+            </div>
+            
+            <div class="divMain_add_allOne line_botoom">
+            	<div class="divMain_add_allOne_L"><span class="color_xinghao">*</span>&nbsp;分配角色：</div>
+            	<div class="divMain_add_allOne_R">
+            		#if($!systemRoles)
+            		#foreach($role in $!systemRoles)
+                	<input name="roleIds" type="checkbox" value="$!role.id" #if($!roleIds.contains($!role.id)) checked="checked" #end>&nbsp;&nbsp;$!role.name
+                	#end
+                	#end
+                </div>
+            </div>
+            
+            <div class="divMain_add_allOne line_botoom">
+            	<div class="divMain_add_allOne_L">&nbsp;修改密码：</div>
+            	<div class="divMain_add_allOne_R">
+            		<a href="javascript:void(0)" onclick="javascript:showPasswordInput()">修改</a>
+            	</div>
+            </div>
+
+            <div id="pwdDiv" class="divMain_add_allOne line_botoom" style="display:none">
+            	<div class="divMain_add_allOne_L"><span class="color_xinghao">*</span>&nbsp;登录密码：</div>
+            	<div class="divMain_add_allOne_R">
+            		<input name="password" id="password" type="password" maxlength="13" class="text270"/>
+            	</div>
+            </div>
+            
+            <div id="pwd1Div" class="divMain_add_allOne line_botoom"  style="display:none">
+            	<div class="divMain_add_allOne_L"><span class="color_xinghao">*</span>&nbsp;确认密码：</div>
+            	<div class="divMain_add_allOne_R">
+            		<input name="password1" id="password1" type="password" maxlength="13" class="text270"/>
+            	</div>
+            </div>
+            
+           	<div class="divMain_add_allOne line_botoom">
+            	<div class="divMain_add_allOne_L">&nbsp;备注：</div>
+            	<div class="divMain_add_allOne_R">
+            		<input name="memo" id="memo" type="text" value="$!object.memo"  class="text270"/>
+            	</div>
+            </div>
+            
+	        <div class="divMain_fenye">
+	        	<div class="divMain_fenyeL">
+	        		<input type="submit" value="保 存" class="anniu_blue">&nbsp;&nbsp;&nbsp;&nbsp;
+	        		<input type="button" value="取 消" name="cancel" onclick="javascript:history.go(-1);" class="anniu_hui100">
+	        	</div>
+	        </div>
+		</div>
+    </div>
+    </form>
+    
+</div>
+</body>
+</html>

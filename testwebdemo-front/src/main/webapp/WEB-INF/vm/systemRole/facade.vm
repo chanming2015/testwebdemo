@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>业务运营管理系统</title>
+	#parse("bgm/include.vm")
+	<link rel="stylesheet" type="text/css" href="$template_url/admin/css/css.css" />
+	<script type="text/javascript" src="$template_url/admin/js/My97DatePicker/WdatePicker.js"></script>	
+	<script type="text/javascript">
+		function changeStatus(id, status, action){
+			if(confirm("确认要" + $(action).text() + "吗？")){
+				$.get("$!front_url/systemRole/changeStatus.json?id="+id+"&status="+status,
+						function(data){
+							if(data.success == "S"){
+								if(status=="OK"){
+									$("#action_" + id).attr("onclick", "changeStatus('" + id + "', 'NO', this)");
+									$("#action_" + id).text("禁用");
+									$("#status_" + id).text("正常");
+								}else{
+									$("#action_" + id).attr("onclick", "changeStatus('" + id + "', 'OK', this)");
+									$("#action_" + id).text("启用");
+									$("#status_" + id).text("禁用");
+								}
+								window.location = "$!front_url/systemRole/facade.html";
+							}else{
+								alert(data.msg);
+							}
+						}
+				);
+			}
+		}
+	</script>
+</head>
+
+<body>
+	<div class="divMain">
+	    <form  action="$!front_url/systemRole/facade.html" method="post" id="queryForm">
+			<div class="divMain_chaxun">
+		    	<div class="divMain_chaxun_bt line_botoom">系统角色管理</div>	<!-- 标题  -->
+		        <div class="divMain_chaxun_m">									<!-- 查询条件  -->
+		        	<div class="divMain_chaxun_mOne">角色名称：<input name="name" type="text" value="$!object.name" maxlength="20" class="text100"></div>
+		        	<div class="divMain_chaxun_mOne">
+		        		创建时间：
+		        		<input name="createAtHead" id="createAtHead" value="$!object.createAtHead" onfocus="WdatePicker({isShowClear:false,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})" type="text" class="text100" />
+		        		—
+		        		<input name="createAtTail" id="createAtTail" value="$!object.createAtTail" onfocus="WdatePicker({isShowClear:false,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})" type="text" class="text100" />
+		        	</div>
+		        	<div class="divMain_chaxun_mOne">
+		        		状态：
+		        		<select name="status" class="select100">
+		        			<option value="0">全部</option>
+		        			#foreach($systemRoleStatusEntry in $!systemRoleStatusMap.entrySet())
+		        			<option value="$systemRoleStatusEntry.getKey()" #if($!object.status == "$systemRoleStatusEntry.getKey()")selected #end>$systemRoleStatusEntry.getValue()</option>
+		        			#end
+		        		</select>
+		        	</div>
+		        	<div class="divMain_chaxun_mAnniu"><input type="submit" value="查 询" class="anniu_blue"></div>
+		        </div>
+		    </div>
+	    </form>
+
+
+		<div class="divMain_chaxun">
+	    	<div class="divMain_liebiao_bt line_botoom">
+	        	<span class="divMain_liebiao_one01" style="width:1%;">&nbsp;</span>
+				<span class="divMain_liebiao_one01" style="width:15%;">角色名称</span>
+				<span class="divMain_liebiao_one01" style="width:29%;">角色说明</span>
+				<span class="divMain_liebiao_one01" style="width:15%;">创建时间</span>
+				<span class="divMain_liebiao_one01" style="width:15%;">状态</span>
+			    <span class="divMain_liebiao_one01" style="width:20%;">操作</span>
+	        </div>
+	        
+        	#if($pager.elements.size()>0)
+				#foreach($item in $pager.elements)
+				<div class="divMain_liebiao_all line_botoom">
+					<span class="divMain_liebiao_one01" style="width:1%;">&nbsp;</span>
+					<span class="divMain_liebiao_all01" style="width:15%;">$item.name</span>
+					<span class="divMain_liebiao_all01" style="width:29%;">$item.description</span>
+					<span class="divMain_liebiao_all01" style="width:15%;">$!dateTool.format("yyyy-MM-dd HH:mm:ss",$item.createAt)</span>
+					<span class="divMain_liebiao_all01" style="width:15%;" id="status_$!item.id">$!systemRoleStatusMap.get($item.status)</span>
+			    	<span class="divMain_liebiao_all01" style="width:20%;">
+						#if($!item.status == "NO")
+							<a id="action_$!item.id" href="javascript:void(0)" onclick="changeStatus('$!item.getId()', 'OK', this)">启用</a>
+						#else
+		    				<a id="action_$!item.id" href="javascript:void(0)" onclick="changeStatus('$!item.getId()', 'NO', this)">禁用</a>
+		    				&nbsp;&nbsp;|
+		    				<a href="$!front_url/systemRole/modify?id=$item.id">修改</a>
+		    				&nbsp;&nbsp;|
+			    			<a href="$!front_url/systemRole/assign?id=$item.id">&nbsp;&nbsp;分配权限</a>
+						#end	
+			    	</span>
+				</div>
+				#end
+			#else
+				<div class="divNone line_botoom">暂无信息</div>
+			#end   
+	        
+	        
+	        <div class="divMain_fenye">
+	        	<div class="divMain_fenyeL"><a href="$!front_url/systemRole/add.html" class="anniu_blue">添加</a></div>
+				#parse("bgm/commonPager.vm")
+	        </div>
+	    </div>
+	</div>
+</body>
+</html>

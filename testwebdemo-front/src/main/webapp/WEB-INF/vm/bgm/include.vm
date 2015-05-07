@@ -1,0 +1,20 @@
+#set($front_url=$!props.getProperty('front_url',''))
+#set($upload=$!props.getProperty('upload',''))
+
+#set($template_url= $front_url + "/template")
+#set($static_url= $front_url + "/template")
+
+#set($template_url="http://localhost/template")
+#set($static_url="http://localhost/template")
+
+#set($upload="http://localhost")				## file upload handler
+#set($uploads=$upload+"/uploads")				## file reference
+<script src="$template_url/admin/js/jquery.min.js"></script>
+<script src="$template_url/admin/js/jquery.validate.js"></script>
+<script src="$template_url/admin/js/jquery.metadata.js"></script>
+<script src="$template_url/admin/js/messages_cn.js"></script>
+<script>
+	var static_url = "$static_url";
+	var upload = "$upload";
+	var front_url = "$front_url";
+</script>

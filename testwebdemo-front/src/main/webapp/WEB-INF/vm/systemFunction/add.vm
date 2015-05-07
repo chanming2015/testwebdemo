@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>业务运营管理系统</title>
+	#parse("bgm/include.vm")
+	<link rel="stylesheet" type="text/css" href="$template_url/admin/css/css.css" />
+	<link rel="stylesheet" type="text/css" href="$template_url/admin/css/jquery.autocomplete.css" />
+	<script type="text/javascript" src="$template_url/admin/js/jquery.autocomplete.js"></script>	
+	<script>
+		var functionArray = new Array();
+		#if($parentFunctions)
+			#foreach($function in $!parentFunctions)
+				functionArray.push({code:"$function.id", name:"$function.name"});
+			#end
+		#end
+		
+		$(function(){
+	    	$("#addForm").validate({
+	    		submitHandler:function(form){
+	    			add();
+	            },
+	            onfocusout: function(element) { $(element).valid(); },
+	    		rules:{
+					parentId:{	number:true, 
+								maxlength:20,
+								remote:{
+									type:"POST",
+					        		url:"$!front_url/systemFunction/check.json"
+								}},
+					level:{required:true,number:true,maxlength:2},
+					serial:{required:true,number:true,maxlength:2},
+					name:{required:true,maxlength:32},
+					menu:{required:true},
+					actionUrl:{maxlength:128}
+	    		},
+	            messages:{
+	            	parentId:{
+	            		remote:"<span style='color:#27a9e3'>该功能不存在！</span>"
+	            	}
+	            }
+	    	});
+	    	$('#parentId').autocomplete(functionArray, {
+				 max: 10,    //列表里的条目数
+				 minChars: 1,    //自动完成激活之前填入的最小字符
+				 width: 400,     //提示的宽度，溢出隐藏
+				 scrollHeight: 300,   //提示的高度，溢出显示滚动条
+				 matchContains: true,    //包含匹配，就是data参数里的数据，是否只要包含文本框里的数据就显示
+				 autoFill: false,    //自动填充
+				 formatItem: function(row, i, max) {
+					 return i + '/' + max + ':"' + row.code + '"[' + row.name + ']';
+				 },
+				 formatMatch: function(row, i, max) {
+					 return row.code + row.name;
+				 },
+				 formatResult: function(row) {
+					 return row.code;
+				 }
+			 }).result(function(event, row, formatted) {
+				 //$("#storeName").val(row.name);
+			 });
+		});
+
+		function add(){
+			$.ajax({
+                type: "POST",
+                url: "$!front_url/systemFunction/add.json",
+                data: $('#addForm').serialize(),
+                success: function(data) {
+                	if(data.success == "S"){
+                		window.location = "$!front_url/systemFunction/facade.html"
+                	}else{
+                		alert(data.msg);
+                	}
+                },
+                error: function(data) {
+                    alert("访问出错，请检查网络。" + JSON.stringify(data));
+               	}
+            });
+		}
+		
+	</script>
+</head>
+
+<body>
+
+<div class="divMain">
+    <form action="$!front_url/systemFunction/add.json" method="post" id="addForm">
+	<div class="divMain_chaxun">
+    	<div class="divMain_add_bt line_botoom">新增系统功能</div>
+        <div class="divMain_add_all line_botoom">
+			<div class="divMain_add_allOne line_botoom">
+				<div class="divMain_add_allOne_L">&nbsp;父功能编号：</div>
+				<div class="divMain_add_allOne_R">
+					<input name="parentId" id="parentId" type="text"  class="text270"/>
+				</div>
+			</div>
+
+			<div class="divMain_add_allOne line_botoom">
+				<div class="divMain_add_allOne_L"><span class="color_xinghao">*</span>&nbsp;所处层级：</div>
+				<div class="divMain_add_allOne_R">
+					<input name="level" id="level" type="text"  class="text270"/>
+				</div>
+			</div>
+
+			<div class="divMain_add_allOne line_botoom">
+				<div class="divMain_add_allOne_L"><span class="color_xinghao">*</span>&nbsp;同级序号：</div>
+				<div class="divMain_add_allOne_R">
+					<input name="serial" id="serial" type="text"  class="text270"/>
+				</div>
+			</div>
+
+			<div class="divMain_add_allOne line_botoom">
+				<div class="divMain_add_allOne_L"><span class="color_xinghao">*</span>&nbsp;功能名称：</div>
+				<div class="divMain_add_allOne_R">
+					<input name="name" id="name" type="text"  class="text270"/>
+				</div>
+			</div>
+
+			<div class="divMain_add_allOne line_botoom">
+				<div class="divMain_add_allOne_L"><span class="color_xinghao">*</span>&nbsp;是否菜单：</div>
+				<div class="divMain_add_allOne_R">
+					<div class="divMain_add_allOne_R">
+	        		&nbsp;&nbsp;<input name="menu" id="menu_true" type="radio" value="true" checked>&nbsp;&nbsp;是
+	        		&nbsp;&nbsp;<input name="menu" id="menu_false" type="radio" value="false">&nbsp;&nbsp;否
+            	</div>
+				</div>
+			</div>
+
+			<div class="divMain_add_allOne line_botoom">
+				<div class="divMain_add_allOne_L">&nbsp;访问路径：</div>
+				<div class="divMain_add_allOne_R">
+					<input name="actionUrl" id="actionUrl" type="text"  class="text270"/>
+				</div>
+			</div>
+
+	        <div class="divMain_fenye">
+	        	<div class="divMain_fenyeL">
+	        		<input type="submit" value="创 建" class="anniu_blue">&nbsp;&nbsp;&nbsp;&nbsp;
+	        		<input type="button" value="取 消" name="cancel" onclick="javascript:history.go(-1);" class="anniu_hui100">
+	        	</div>
+	        </div>
+		</div>
+    </div>
+    </form>
+
+</div>
+</body>
+</html>

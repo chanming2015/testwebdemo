@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>业务运营管理系统</title>
+	#parse("bgm/include.vm")
+	<link href="$template_url/admin/css/lanrenzhijia.css" type="text/css" rel="stylesheet" />
+    <script src="$template_url/admin/js/jquery.min.js"></script>
+    <script src="$template_url/admin/js/lanrenzhijia.js"></script>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<style type="text/css">
+		body {
+			margin-left: 10px;
+			margin-top: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div class="lanrenzhijia" style="float:left">
+
+		<div class="left1">管理功能</div>
+		<ul id="nav_dot">
+				#if($functions)
+				#foreach($func in $!functions)
+					#if($!func.menu && $!func.level == 1 && $!shiro.hasPermission($!func.name))
+						<li>
+							<h4>$!func.name</h4>
+							<div class="list-item none">
+								#foreach($fun in $!func.children)
+								#if($fun.menu && $fun.level == 2 && $!shiro.hasPermission($!fun.name))
+				          		<a href='$!fun.actionUrl' target="mainFrame">$!fun.name</a>
+				          		#end
+				          		#end
+							</div>
+				        </li>
+				    #end
+				#end
+				#end
+	  	</ul>
+	</div>
+<script>
+  navList(12);
+</script>
+
+</body>
+</html>

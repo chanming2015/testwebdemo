@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>业务运营管理系统</title>
+	#parse("bgm/include.vm")
+	<link rel="stylesheet" type="text/css" href="$template_url/admin/css/css.css" />
+	<script type="text/javascript" src="$template_url/admin/js/additional-methods.js"></script>
+	<script>
+		$(function(){
+	    	$("#addForm").validate({
+	    		submitHandler:function(form){
+	                add();
+	            },
+	            onfocusout: function(element) { $(element).valid(); },
+	    		rules:{
+	    			loginName:{required:true, minlength:2, maxlength:20},
+	    			realName:{required:true, minlength:2, maxlength:20},
+	    			mobile:{required:true, number:true, maxlength:13},
+	    			roleIds:{required:true},
+	    			password:{required:true, charsAndNumbers:true},
+	    			password1:{required:true, equalTo:"#password"}
+	    		}
+	    	});
+		});
+		function add(){
+			$.ajax({
+                type: "POST",
+                url: "$!front_url/systemUser/add.json",
+                data: $('#addForm').serialize(),
+                success: function(data) {
+                	if(data.success == "S"){
+                		window.location = "$!front_url/systemUser/facade.html"
+                	}else{
+                		alert(data.msg);
+                	}
+                },
+                error: function(data) {
+                    alert("访问出错，请检查网络。" + JSON.stringify(data));
+               	}
+            });
+		}
+	</script>
+</head>
+
+<body>
+
+<div class="divMain">
+    <form action="$!front_url/systemUser/add.html" method="post" id="addForm">
+	<div class="divMain_chaxun">
+    	<div class="divMain_add_bt line_botoom">新增系统用户</div>
+        <div class="divMain_add_all line_botoom">
+        	<div class="divMain_add_allOne line_botoom">
+            	<div class="divMain_add_allOne_L"><span class="color_xinghao">*</span>&nbsp;登录名：</div>
+            	<div class="divMain_add_allOne_R">
+            		<input name="loginName" id="loginName" type="text"  class="text270"/>
+            	</div>
+            </div>
+            
+            <div class="divMain_add_allOne line_botoom">
+            	<div class="divMain_add_allOne_L"><span class="color_xinghao">*</span>&nbsp;真实姓名：</div>
+            	<div class="divMain_add_allOne_R">
+            		<input name="realName" id="realName" type="text"  class="text270"/>
+            	</div>
+            </div>
+            
+            <div class="divMain_add_allOne line_botoom">
+            	<div class="divMain_add_allOne_L"><span class="color_xinghao">*</span>&nbsp;手机号码：</div>
+            	<div class="divMain_add_allOne_R">
+            		<input name="mobile" id="mobile" type="text" maxlength="13" class="text270"/>
+            	</div>
+            </div>
+            
+            <div class="divMain_add_allOne line_botoom">
+            	<div class="divMain_add_allOne_L"><span class="color_xinghao">*</span>&nbsp;分配角色：</div>
+            	<div class="divMain_add_allOne_R">
+            		#if($!systemRoles)
+            		#foreach($role in $!systemRoles)
+                	<input name="roleIds" type="checkbox" value="$!role.id">&nbsp;&nbsp;$!role.name
+                	#end
+                	#end
+                </div>
+            </div>
+
+            <div class="divMain_add_allOne line_botoom">
+            	<div class="divMain_add_allOne_L"><span class="color_xinghao">*</span>&nbsp;登录密码：</div>
+            	<div class="divMain_add_allOne_R">
+            		<input name="password" id="password" type="password" maxlength="13" class="text270"/>
+            	</div>
+            </div>
+            
+            <div class="divMain_add_allOne line_botoom">
+            	<div class="divMain_add_allOne_L"><span class="color_xinghao">*</span>&nbsp;确认密码：</div>
+            	<div class="divMain_add_allOne_R">
+            		<input name="password1" id="password1" type="password" maxlength="13" class="text270"/>
+            	</div>
+            </div>
+            
+           	<div class="divMain_add_allOne line_botoom">
+            	<div class="divMain_add_allOne_L">&nbsp;备注：</div>
+            	<div class="divMain_add_allOne_R">
+            		<input name="memo" id="memo" type="text"  class="text270"/>
+            	</div>
+            </div>
+            
+	        <div class="divMain_fenye">
+	        	<div class="divMain_fenyeL">
+	        		<input type="submit" value="创 建" class="anniu_blue">&nbsp;&nbsp;&nbsp;&nbsp;
+	        		<input type="button" value="取 消" name="cancel" onclick="javascript:history.go(-1);" class="anniu_hui100">
+	        	</div>
+	        </div>
+		</div>
+    </div>
+    </form>
+    
+</div>
+</body>
+</html>

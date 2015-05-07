@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>业务运营管理系统</title>
+	#parse("bgm/include.vm")
+	<link rel="stylesheet" type="text/css" href="$template_url/admin/css/css.css" />
+	<script>
+		function assign(){
+			$.ajax({
+                type: "POST",
+                url: "$!front_url/systemRole/assign.json?id=$!id",
+                data: $('#assignForm').serialize(),
+                success: function(data) {
+                	if(data.success == "S"){
+                		window.location = "$!front_url/systemRole/facade.html"
+                	}else{
+                		alert(data.msg);
+                	}
+                },
+                error: function(data) {
+                    alert("访问出错，请检查网络。" + JSON.stringify(data));
+               	}
+            });
+		}
+	</script>
+</head>
+
+<body>
+	<div class="divMain">
+		<form action="$!front_url/systemRole/assign.json" method="post" id="assignForm">
+		<div class="divMain_chaxun">
+			<div class="divMain_add_bt line_botoom">分配角色权限</div>
+				#if($functions)
+				#foreach($func in $!functions)
+					#if($!func.level == 1)
+						<div class="role line_botoom">
+							<input name="functionIds" type="checkbox" value="$func.id" #if($!functionIds.contains($func.id)) checked="checked" #end>&nbsp;$func.name
+						</div>
+			            <div class="role01 line_botoom">
+			            	#foreach($fun in $!func.children)
+							#if($fun.menu && $fun.level == 2)
+								<div class="role01-1">
+			          				<input name="functionIds" type="checkbox" value="$fun.id" #if($!functionIds.contains($fun.id)) checked="checked" #end>&nbsp;$fun.name
+			          			</div>
+			          		#end
+			          		#end
+			            </div>
+				    #end
+				#end
+				#end
+		        <div class="divMain_fenye">
+		        	<div class="divMain_fenyeL">
+		        		<input type="button" value="保存" onclick="javascript:assign()" class="anniu_blue">&nbsp;&nbsp;&nbsp;&nbsp;
+		        		<input type="button" value="取 消" onclick="javascript:history.go(-1);" class="anniu_hui100">
+		        	</div>
+		        </div>
+		</div>
+		</form>
+	</div>
+</body>
+</html>
