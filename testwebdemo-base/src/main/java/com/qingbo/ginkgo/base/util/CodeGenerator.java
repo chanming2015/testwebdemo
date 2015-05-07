@@ -19,26 +19,80 @@ import java.util.Random;
  */
 public class CodeGenerator {
 	
+	/**
+	 * 全部大写字母
+	 */
 	private static String uppercaseCandidate = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	/**
+	 * 全部小写字母
+	 */
 	private static String lowercaseCandidate = "abcdefghijklmnopqrstuvwxyz";
+	/**
+	 * 全部大写和小写字母
+	 */
 	private static String characterCandidate = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	/**
+	 * 全部数字
+	 */
 	private static String digitCandidate = "0123456789";
+	/**
+	 * 全部特殊符号
+	 */
 	private static String symbolCandidate = "~!@#$%^&*()<>{}_+:;,.=-|/";
+	/**
+	 * 全部特殊符号和数字
+	 */
 	private static String symbolDigitCandidate = "~!@#$%^&*()<>{}_+:;,.=-|/0123456789";
+	/**
+	 * 全部大写、小写字母和特殊符号
+	 */
 	private static String characterSymbolCandidate = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@#$%^&*()<>{}_+:;,.=-|/";
+	/**
+	 * 全部大写、小写字母和数字
+	 */
 	private static String characterDigitCandidate = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	/**
+	 * 全部大写、小写字母、特殊符号和数字
+	 */
 	private static String fullDoseCandidate = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@#$%^&*()<>{}_+:;,.=-|/0123456789";
 	
 	private static Random random = new Random();
 
+	/**
+	 * 大写字母
+	 */
 	public static final int UPPERCASE 			= 1;
+	/**
+	 * 小写字母
+	 */
 	public static final int LOWERCASE 			= 2;
+	/**
+	 * 大写和小写字母
+	 */
 	public static final int CHARACTER 			= 3;
+	/**
+	 * 数字
+	 */
 	public static final int DIGIT 				= 4;
+	/**
+	 * 特殊符号
+	 */
 	public static final int SYMBOL 				= 5;
+	/**
+	 * 字母和特殊符号
+	 */
 	public static final int CHARACTER_SYMBOL 	= 6;
+	/**
+	 * 特殊符号和数字
+	 */
 	public static final int SYMBOL_DIGIT 		= 7;
+	/**
+	 * 字母和数字
+	 */
 	public static final int CHARACTER_DIGIT 	= 8;
+	/**
+	 * 所有
+	 */
 	public static final int FULL_DOSE 			= 9;
 	
 	public static String generate(int type, int length){
