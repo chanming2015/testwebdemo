@@ -32,9 +32,9 @@
 			<artifactId>poi-examples</artifactId>
 			<version>3.9</version>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 			<groupId>com.shequ2.testwebdemo</groupId>
 			<artifactId>testwebdemo-domain</artifactId>
-		</dependency> -->
+		</dependency>
 	</dependencies>
 </project>

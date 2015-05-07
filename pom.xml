@@ -19,6 +19,24 @@
 		<shiro.version>1.2.3</shiro.version>
 	</properties>
 	
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
+	
 	<!-- 项目依赖管理 -->
 	<dependencyManagement>
 		<dependencies>
@@ -299,6 +317,17 @@
 				<groupId>org.apache.shiro</groupId>
 				<artifactId>shiro-quartz</artifactId>
 				<version>${shiro.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.shequ2.testwebdemo</groupId>
+				<artifactId>testwebdemo-domain</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.shequ2.testwebdemo</groupId>
+				<artifactId>testwebdemo-web</artifactId>
+				<version>${project.version}</version>
 			</dependency>
 
 		</dependencies>

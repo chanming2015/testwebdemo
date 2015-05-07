@@ -20,10 +20,10 @@
 	</build>
 
 	<dependencies>
-		<!-- <dependency>
+		<dependency>
 			<groupId>com.shequ2.testwebdemo</groupId>
 			<artifactId>testwebdemo-web</artifactId>
-		</dependency> -->
+		</dependency>
 		<dependency>
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity-tools</artifactId>
