@@ -16,7 +16,7 @@
 		<hibernate.version>4.3.4.Final</hibernate.version>
 		<spring-data-jpa.version>1.11.23.RELEASE</spring-data-jpa.version>
 		<aspectj.version>1.7.4</aspectj.version>
-		<shiro.version>1.5.2</shiro.version>
+		<shiro.version>1.7.1</shiro.version>
 	</properties>
 	
 	<dependencies>
@@ -108,12 +108,12 @@
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-core</artifactId>
-				<version>1.0.13</version>
+				<version>1.2.3</version>
 			</dependency>
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
-				<version>1.0.13</version>
+				<version>1.2.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.velocity</groupId>
@@ -224,7 +224,7 @@
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpclient</artifactId>
-				<version>4.3.6</version>
+				<version>4.5.13</version>
 			</dependency>
 			<dependency>
 				<groupId>net.sf.ehcache</groupId>
